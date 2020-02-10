@@ -1,0 +1,36 @@
+{
+  "photoStates": {
+    "afterSolarNoonPhotoTaken": false,
+    "goldenHourMorningPhotoTaken": false,
+    "goldenHourAfternoonPhotoTaken": false
+  },
+  "outputs": {},
+  "dateCalculations": {
+    "solarNoon": "2020-02-09T20:27:13.676Z",
+    "nadir": "2020-02-09T08:27:13.676Z",
+    "sunrise": "2020-02-09T15:32:45.319Z",
+    "sunset": "2020-02-10T01:21:42.032Z",
+    "sunriseEnd": "2020-02-09T15:36:16.805Z",
+    "sunsetStart": "2020-02-10T01:18:10.546Z",
+    "dawn": "2020-02-09T14:59:19.882Z",
+    "dusk": "2020-02-10T01:55:07.469Z",
+    "nauticalDawn": "2020-02-09T14:21:43.719Z",
+    "nauticalDusk": "2020-02-10T02:32:43.632Z",
+    "nightEnd": "2020-02-09T13:44:48.986Z",
+    "night": "2020-02-10T03:09:38.365Z",
+    "goldenHourEnd": "2020-02-09T16:19:29.239Z",
+    "goldenHour": "2020-02-10T00:34:58.113Z"
+  },
+  "lat": "49.200516",
+  "lng": "-122.915205",
+  "timeRan": "2020-02-10T07:22:07.139Z",
+  "inputNowTime": "2020-02-10T07:22:07.138Z",
+  "inputCheckTime": "2020-02-10T07:22:07.138Z",
+  "goldenHourAfternoon": false,
+  "goldenHourMorning": false,
+  "isGoldenHour": false,
+  "isNighttime": true,
+  "afterSolarNoon": false,
+  "lastEvent": "goldenHourAfternoonPhotoTaken",
+  "inputTomorrowDate": "2020-02-11T07:22:07.138Z"
+}
