@@ -80,6 +80,9 @@ const writeToDisk = () => {
       console.log(`Error: couldn't write state to disk ('${stateFilePath}'): ${err}`);
     }
     console.log(`currentState saved to disk: '${stateFilePath}'`);
+    console.log("");
+    console.log("");
+    console.log("");
     process.exit(0);
   });
 };
@@ -114,10 +117,6 @@ currentState.isGoldenHour = false;
 currentState.isNighttime = false;
 currentState.afterSolarNoon = false;
 
-currentState.photoStates.afterSolarNoonPhotoTaken = false;
-currentState.photoStates.goldenHourMorningPhotoTaken = false;
-currentState.photoStates.goldenHourAfternoonPhotoTaken = false;
-
 if (tomorrowResults.sunrise > checkTimeNow && results.sunset < checkTimeNow) {
   currentState.isNighttime = true;
 }
@@ -126,7 +125,8 @@ if (results.solarNoon < checkTimeNow && !currentState.isNighttime) {
   currentState.afterSolarNoon = true;
   if (!currentState.photoStates.afterSolarNoonPhotoTaken) {
     currentState.lastEvent = "afterSolarNoon";
-    console.log('Event: afterSolarNoonPhotoTaken', currentState.photoStates.afterSolarNoonPhotoTaken);
+    console.log('Event Triggered: afterSolarNoonPhotoTaken', currentState.photoStates.afterSolarNoonPhotoTaken);
+    currentState.photoStates.afterSolarNoonPhotoTaken = true;
     if (commandExec) {
       exec(commandExec, (error, stdout, stderr) => {
         currentState.outputs.commandExec = { command: commandExec, error, stdout, stderr };
@@ -148,7 +148,8 @@ if (results.goldenHour < checkTimeNow && currentState.afterSolarNoon && !current
   currentState.goldenHourAfternoon = true;
   if (!currentState.photoStates.goldenHourAfternoonPhotoTaken) {
     currentState.lastEvent = "goldenHourAfternoonPhotoTaken";
-    console.log('Event: goldenHourAfternoonPhotoTaken', currentState.photoStates.goldenHourAfternoonPhotoTaken);
+    console.log('Event Triggered: goldenHourAfternoonPhotoTaken', currentState.photoStates.goldenHourAfternoonPhotoTaken);
+    currentState.photoStates.goldenHourAfternoonPhotoTaken = true;
     if (commandExec) {
       exec(commandExec, (error, stdout, stderr) => {
         currentState.outputs.commandExec = { command: commandExec, error, stdout, stderr };
@@ -170,7 +171,8 @@ if (results.goldenHourEnd > checkTimeNow && !currentState.isNighttime) { // Betw
   currentState.goldenHourMorning = true;
   if (!currentState.photoStates.goldenHourMorningPhotoTaken) {
     currentState.lastEvent = "goldenHourMorningPhotoTaken";
-    console.log('Event: goldenHourMorningPhotoTaken', currentState.photoStates.goldenHourMorningPhotoTaken);
+    console.log('Event Triggered: goldenHourMorningPhotoTaken', currentState.photoStates.goldenHourMorningPhotoTaken);
+    currentState.photoStates.goldenHourMorningPhotoTaken = true;
     if (commandExec) {
       exec(commandExec, (error, stdout, stderr) => {
         currentState.outputs.commandExec = { command: commandExec, error, stdout, stderr };
@@ -190,6 +192,12 @@ if (results.goldenHourEnd > checkTimeNow && !currentState.isNighttime) { // Betw
 
 if (currentState.goldenHourMorning || currentState.goldenHourAfternoon) {
   currentState.isGoldenHour = true;
+}
+
+if (currentState.isNighttime) {
+  currentState.photoStates.afterSolarNoonPhotoTaken = false;
+  currentState.photoStates.goldenHourMorningPhotoTaken = false;
+  currentState.photoStates.goldenHourAfternoonPhotoTaken = false;
 }
 
 let currentStateData = JSON.stringify(currentState, null, 2);
