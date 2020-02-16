@@ -121,71 +121,73 @@ if (results.sunrise > checkTimeNow || results.sunset < checkTimeNow) {
   currentState.isNighttime = true;
 }
 
-if (results.solarNoon < checkTimeNow && !currentState.isNighttime) {
-  currentState.afterSolarNoon = true;
-  if (!currentState.photoStates.afterSolarNoonPhotoTaken) {
-    currentState.lastEvent = "afterSolarNoon";
-    currentState.photoStates.afterSolarNoonPhotoTaken = true;
-    console.log('Event Triggered: afterSolarNoonPhotoTaken', currentState.photoStates.afterSolarNoonPhotoTaken);
-    if (commandExec) {
-      exec(commandExec, (error, stdout, stderr) => {
-        currentState.outputs.commandExec = { command: commandExec, error, stdout, stderr };
-        commandDone = true;
-        if (httpDone && commandDone) { writeToDisk(); }
-      });
-    }
-    if (httpUrl) {
-      sendHttp(httpUrl, httpMethod, { currentState, previousState }, (resultCode, result) => {
-        currentState.outputs.httpResult = { httpUrl, httpMethod, resultCode, result };
-        httpDone = true;
-        if (httpDone && commandDone) { writeToDisk(); }
-      });
-    }
-  }
-}
-
-if (results.goldenHour < checkTimeNow && currentState.afterSolarNoon && !currentState.isNighttime) { // Between golden hour start and timetime start.
-  currentState.goldenHourAfternoon = true;
-  if (!currentState.photoStates.goldenHourAfternoonPhotoTaken) {
-    currentState.lastEvent = "goldenHourAfternoonPhotoTaken";
-    currentState.photoStates.goldenHourAfternoonPhotoTaken = true;
-    console.log('Event Triggered: goldenHourAfternoonPhotoTaken', currentState.photoStates.goldenHourAfternoonPhotoTaken);
-    if (commandExec) {
-      exec(commandExec, (error, stdout, stderr) => {
-        currentState.outputs.commandExec = { command: commandExec, error, stdout, stderr };
-        commandDone = true;
-        if (httpDone && commandDone) { writeToDisk(); }
-      });
-    }
-    if (httpUrl) {
-      sendHttp(httpUrl, httpMethod, { currentState, previousState }, (resultCode, result) => {
-        currentState.outputs.httpResult = { httpUrl, httpMethod, resultCode, result };
-        httpDone = true;
-        if (httpDone && commandDone) { writeToDisk(); }
-      });
+if (!currentState.isNighttime) {
+  if (results.solarNoon < checkTimeNow) {
+    currentState.afterSolarNoon = true;
+    if (!currentState.photoStates.afterSolarNoonPhotoTaken) {
+      currentState.lastEvent = "afterSolarNoon";
+      currentState.photoStates.afterSolarNoonPhotoTaken = true;
+      console.log('Event Triggered: afterSolarNoonPhotoTaken', currentState.photoStates.afterSolarNoonPhotoTaken);
+      if (commandExec) {
+        exec(commandExec, (error, stdout, stderr) => {
+          currentState.outputs.commandExec = { command: commandExec, error, stdout, stderr };
+          commandDone = true;
+          if (httpDone && commandDone) { writeToDisk(); }
+        });
+      }
+      if (httpUrl) {
+        sendHttp(httpUrl, httpMethod, { currentState, previousState }, (resultCode, result) => {
+          currentState.outputs.httpResult = { httpUrl, httpMethod, resultCode, result };
+          httpDone = true;
+          if (httpDone && commandDone) { writeToDisk(); }
+        });
+      }
     }
   }
-}
-
-if (results.goldenHourEnd > checkTimeNow && !currentState.isNighttime) { // Between golden hour end and nighttime end
-  currentState.goldenHourMorning = true;
-  if (!currentState.photoStates.goldenHourMorningPhotoTaken) {
-    currentState.lastEvent = "goldenHourMorningPhotoTaken";
-    currentState.photoStates.goldenHourMorningPhotoTaken = true;
-    console.log('Event Triggered: goldenHourMorningPhotoTaken', currentState.photoStates.goldenHourMorningPhotoTaken);
-    if (commandExec) {
-      exec(commandExec, (error, stdout, stderr) => {
-        currentState.outputs.commandExec = { command: commandExec, error, stdout, stderr };
-        commandDone = true;
-        if (httpDone && commandDone) { writeToDisk(); }
-      });
+  
+  if (results.goldenHour < checkTimeNow && currentState.afterSolarNoon) { // Between golden hour start and timetime start.
+    currentState.goldenHourAfternoon = true;
+    if (!currentState.photoStates.goldenHourAfternoonPhotoTaken) {
+      currentState.lastEvent = "goldenHourAfternoonPhotoTaken";
+      currentState.photoStates.goldenHourAfternoonPhotoTaken = true;
+      console.log('Event Triggered: goldenHourAfternoonPhotoTaken', currentState.photoStates.goldenHourAfternoonPhotoTaken);
+      if (commandExec) {
+        exec(commandExec, (error, stdout, stderr) => {
+          currentState.outputs.commandExec = { command: commandExec, error, stdout, stderr };
+          commandDone = true;
+          if (httpDone && commandDone) { writeToDisk(); }
+        });
+      }
+      if (httpUrl) {
+        sendHttp(httpUrl, httpMethod, { currentState, previousState }, (resultCode, result) => {
+          currentState.outputs.httpResult = { httpUrl, httpMethod, resultCode, result };
+          httpDone = true;
+          if (httpDone && commandDone) { writeToDisk(); }
+        });
+      }
     }
-    if (httpUrl) {
-      sendHttp(httpUrl, httpMethod, { currentState, previousState }, (resultCode, result) => {
-        currentState.outputs.httpResult = { httpUrl, httpMethod, resultCode, result };
-        httpDone = true;
-        if (httpDone && commandDone) { writeToDisk(); }
-      });
+  }
+  
+  if (results.goldenHourEnd > checkTimeNow) { // Between golden hour end and nighttime end
+    currentState.goldenHourMorning = true;
+    if (!currentState.photoStates.goldenHourMorningPhotoTaken) {
+      currentState.lastEvent = "goldenHourMorningPhotoTaken";
+      currentState.photoStates.goldenHourMorningPhotoTaken = true;
+      console.log('Event Triggered: goldenHourMorningPhotoTaken', currentState.photoStates.goldenHourMorningPhotoTaken);
+      if (commandExec) {
+        exec(commandExec, (error, stdout, stderr) => {
+          currentState.outputs.commandExec = { command: commandExec, error, stdout, stderr };
+          commandDone = true;
+          if (httpDone && commandDone) { writeToDisk(); }
+        });
+      }
+      if (httpUrl) {
+        sendHttp(httpUrl, httpMethod, { currentState, previousState }, (resultCode, result) => {
+          currentState.outputs.httpResult = { httpUrl, httpMethod, resultCode, result };
+          httpDone = true;
+          if (httpDone && commandDone) { writeToDisk(); }
+        });
+      }
     }
   }
 }
@@ -194,7 +196,8 @@ if (currentState.goldenHourMorning || currentState.goldenHourAfternoon) {
   currentState.isGoldenHour = true;
 }
 
-if (currentState.isNighttime) {
+if (previousState.isNighttime === false && currentState.isNighttime === true) {
+  console.log('Event Triggered: isNighttime', currentState.isNighttime);
   currentState.photoStates.afterSolarNoonPhotoTaken = false;
   currentState.photoStates.goldenHourMorningPhotoTaken = false;
   currentState.photoStates.goldenHourAfternoonPhotoTaken = false;
