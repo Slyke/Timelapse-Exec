@@ -203,6 +203,13 @@ if (previousState.isNighttime === false && currentState.isNighttime === true) {
   currentState.photoStates.goldenHourAfternoonPhotoTaken = false;
 }
 
+if (previousState.isNighttime === true && currentState.isNighttime === false) {
+  console.log('Event Triggered: isNighttime', currentState.isNighttime);
+  currentState.photoStates.afterSolarNoonPhotoTaken = false;
+  currentState.photoStates.goldenHourMorningPhotoTaken = false;
+  currentState.photoStates.goldenHourAfternoonPhotoTaken = false;
+}
+
 let currentStateData = JSON.stringify(currentState, null, 2);
 if (httpDone && commandDone) { writeToDisk(); }
 
@@ -210,4 +217,5 @@ setTimeout(() => {
   writeToDisk();
 }, writeTimeout);
 
-console.log(currentState);
+console.log('Current: ',currentState);
+console.log('Previous: ', previousState);
